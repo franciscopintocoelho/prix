@@ -6,9 +6,14 @@ var app = express();
 app.set('port', (process.env.PORT || 3000)); 
 
 app.get('/update/', function(req, res) {
-    child.exec('git checkout master', function(error, stdout, stderr) {
-        if(!error) console.log(stdout);
-        else console.log(stderr);
+    child.exec('git pull', function(error, stdout, stderr) {
+        if(!error) {
+            console.log('<---------------git updated--------------->');
+            child.exec('npm install', function(error, stdout, stderr) {
+                if(!error) console.log('<---------------npm installed--------------->');
+                else console.log(stderr);
+            });
+        } else console.log(stderr);
     });
 });
 
