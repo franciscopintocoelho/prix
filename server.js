@@ -10,8 +10,11 @@ app.get('/update/', function(req, res) {
         if(!error) {
             console.log('<---------------git updated--------------->');
             child.exec('npm install', function(error, stdout, stderr) {
-                if(!error) console.log('<---------------npm installed--------------->');
-                else console.log(stderr);
+                if(!error) {
+                    console.log('<---------------npm installed--------------->');
+                    res.status(200).send('updated')
+                    process.exit()
+                } else console.log(stderr);
             });
         } else console.log(stderr);
     });
