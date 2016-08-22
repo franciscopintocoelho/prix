@@ -44,7 +44,6 @@ function getDeviceInfo(err, deviceInfo, res) {
                 console.log('Could not connect: ' + err);
             } else {
                 console.log('Client connected');
-
                 // Create a message and send it to the IoT Hub every second
                 setInterval(function(){
                     var windSpeed = 10 + (Math.random() * 4);
@@ -65,14 +64,14 @@ app.set('port', (process.env.PORT || 8080));
 app.get('/update/', function(req, res) {
     child.exec('git pull', function(error, stdout, stderr) {
         if(!error) {
-            console.log('<---------------git updated--------------->');
+            console.log(stdout);
             child.exec('npm install', function(error, stdout, stderr) {
                 if(!error) {
                     res.status(200).send('updated');
-                    console.log('<---------------npm installed--------------->');
+                    console.log(stdout);
                     child.exec('sudo reboot', function(error, stdout, stderr) {
                         if(!error) {
-                            console.log('<---------------reboot--------------->');
+                            console.log(stdout);
                             process.exit()
                         } else console.log(stderr);
                     });
