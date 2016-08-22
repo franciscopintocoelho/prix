@@ -13,6 +13,10 @@ var clientFromConnectionString = require('azure-iot-device-amqp').clientFromConn
 var Message = require('azure-iot-device').Message;
 
 var device = new iothub.Device(null);
+
+var PythonShell = require('python-shell');
+var pyshell;
+
 device.deviceId = deviceId;
 registry.create(device, function (err, deviceInfo, res) {
     if (err) {
@@ -45,13 +49,16 @@ function getDeviceInfo(err, deviceInfo, res) {
             } else {
                 console.log('Client connected');
                 // Create a message and send it to the IoT Hub every second
-                setInterval(function(){
-                    var windSpeed = 10 + (Math.random() * 4);
-                    var data = JSON.stringify({ deviceId: deviceId, windSpeed: windSpeed });
-                    var message = new Message(data);
-                    console.log("Sending message: " + message.getData());
-                    client.sendEvent(message, printResultFor('send'));
-                }, 1000);
+
+                pyshell = new PythonShell('sensor.py');
+                
+                pyshell.on('message', function(message) {
+                    console.log(message);
+                    //var data = JSON.stringify({ deviceId: deviceId, distance: message });
+                    //var message = new Message(data);
+                    //console.log("Sending message: " + message.getData());
+                    //client.sendEvent(message, printResultFor('send'));
+                });
             }
         };
 
