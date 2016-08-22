@@ -3,7 +3,7 @@ var child = require('child_process');
 var app = express();
 
 
-app.set('port', (process.env.PORT || 3000)); 
+app.set('port', (process.env.PORT || 8080));
 
 app.get('/update/', function(req, res) {
     child.exec('git pull', function(error, stdout, stderr) {
@@ -11,8 +11,14 @@ app.get('/update/', function(req, res) {
             console.log('<---------------git updated--------------->');
             child.exec('npm install', function(error, stdout, stderr) {
                 if(!error) {
+                    res.status(200).send('updated');
                     console.log('<---------------npm installed--------------->');
-                    res.status(200).send('updated')
+                    child.exec('sudo reboot', function(error, stdout, stderr) {
+                        if(!error) {
+                            console.log('<---------------reboot--------------->');
+                            process.exit()
+                        } else console.log(stderr);
+                    });
                     process.exit()
                 } else console.log(stderr);
             });
