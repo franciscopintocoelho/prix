@@ -35,12 +35,12 @@ function printResultFor(op) {
     };
 }
 
-function getDistance() {
+function getSensorDistance() {
     bus.writeByte(address, 0, 81, function () {
         setTimeout(function () {
             bus.readWord(address, 2, function (err, data) {
-                if (!err) 
-                getDistance();
+                if (!err) sendData(data);
+                getSensorDistance();
             });
         }, 50);
     });
@@ -69,7 +69,7 @@ function getDeviceInfo(err, deviceInfo, res) {
             } else {
                 console.log('Client connected');
                 // Create a message and send it to the IoT Hub every second
-                getDistance();
+                getSensorDistance();
             }
         };
 
