@@ -47,11 +47,10 @@ function getSensorDistance() {
 };
 
 function sendData(data) {
-    console.log(data);
-    //var data = JSON.stringify({ deviceId: deviceId, distance: message });
-    //var message = new Message(data);
-    //console.log("Sending message: " + message.getData());
-    //client.sendEvent(message, printResultFor('send'));
+    var data = JSON.stringify({ deviceId: deviceId, distance: (data / 255) });
+    var message = new Message(data);
+    console.log("Sending message: " + message.getData());
+    client.sendEvent(message, printResultFor('send'));
 }
 
 function getDeviceInfo(err, deviceInfo, res) {
