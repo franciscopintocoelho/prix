@@ -17,3 +17,5 @@ var loop = function() {
         }, 50);
     });
 };
+
+loop();
