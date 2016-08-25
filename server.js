@@ -14,6 +14,7 @@ var clientFromConnectionString = require('azure-iot-device-amqp').clientFromConn
 var Message = require('azure-iot-device').Message;
 
 var device = new iothub.Device(null);
+var client;
 
 var bus = i2c.openSync(1);
 var dist, address = 0x70;
@@ -60,7 +61,7 @@ function getDeviceInfo(err, deviceInfo, res) {
         console.log('Device id: ' + deviceInfo.deviceId);
         console.log('Device key: ' + deviceInfo.authentication.SymmetricKey.primaryKey);
 
-        var client = clientFromConnectionString(deviceString);
+        client = clientFromConnectionString(deviceString);
 
         var connectCallback = function (err) {
             if (err) {
