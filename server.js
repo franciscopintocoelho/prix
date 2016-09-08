@@ -1,4 +1,5 @@
 var iothub = require('azure-iothub');
+var child = require('child_process');
 var i2c = require('i2c-bus');
 
 var deviceId = 'prix-1';
@@ -15,6 +16,8 @@ var client;
 var bus = i2c.openSync(1);
 var dist, address = 0x70;
 
+var state = -1;
+
 device.deviceId = deviceId;
 registry.create(device, function (err, deviceInfo, res) {
     if (err) {
@@ -23,31 +26,6 @@ registry.create(device, function (err, deviceInfo, res) {
         connectDevice(err, deviceInfo, res);
     }
 });
-
-function printResultFor(op) {
-    return function printResult(err, res) {
-        if (err) console.log(op + ' error: ' + err.toString());
-        if (res) console.log(op + ' status: ' + res.constructor.name);
-    };
-}
-
-function getSensorDistance() {
-    bus.writeByte(address, 0, 81, function () {
-        setTimeout(function () {
-            bus.readWord(address, 2, function (err, data) {
-                if (!err) sendData(data);
-                getSensorDistance();
-            });
-        }, 50);
-    });
-};
-
-function sendData(data) {
-    var data = JSON.stringify({ deviceId: deviceId, distance: (data / 255) });
-    var message = new Message(data);
-    console.log("Sending message: " + message.getData());
-    client.sendEvent(message, printResultFor('send'));
-}
 
 function connectDevice(err, deviceInfo, res) {
     if (deviceInfo) {
@@ -63,11 +41,55 @@ function connectDevice(err, deviceInfo, res) {
                 console.log('Could not connect: ' + err);
             } else {
                 console.log('Client connected');
-                // Create a message and send it to the IoT Hub every second
+                startVideoState();
                 getSensorDistance();
             }
         };
 
         client.open(connectCallback);
+    }
+};
+
+function getSensorDistance() {
+    bus.writeByte(address, 0, 81, function () {
+        setTimeout(function () {
+            bus.readWord(address, 2, function (err, data) {
+                if (!err) {
+                    checkDistance(data);
+                    //sendData(data);
+                }
+                getSensorDistance();
+            });
+        }, 50);
+    });
+};
+
+function sendData(data) {
+    var data = JSON.stringify({ deviceId: deviceId, distance: (data / 255), state: state });
+    var message = new Message(data);
+    console.log("Sending message: " + message.getData());
+    client.sendEvent(message, printResultFor('send'));
+}
+
+function printResultFor(op) {
+    return function printResult(err, res) {
+        if (err) console.log(op + ' error: ' + err.toString());
+        if (res) console.log(op + ' status: ' + res.constructor.name);
+    };
+}
+
+function startVideoState() {
+    child.exec('omxplayer --loop --no-osd reveal.mp4', function(err, stdout, stderr) {
+        if(!err) state = 0;
+    });
+}
+
+function checkDistance(distance) {
+    if(!state && distance < 100) {
+        state = 1;
+
+        child.exec('omxplayer --no-osd closer.mp4', function(err, stdout, stderr) {
+            if(!err) state = 0;
+        });
     }
 };
