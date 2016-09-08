@@ -18,10 +18,9 @@ var dist, address = 0x70;
 device.deviceId = deviceId;
 registry.create(device, function (err, deviceInfo, res) {
     if (err) {
-        registry.get(device.deviceId, getDeviceInfo);
-    }
-    if (deviceInfo) {
-        connectDevice(err, deviceInfo, res)
+        registry.get(device.deviceId, connectDevice);
+    } else if (deviceInfo) {
+        connectDevice(err, deviceInfo, res);
     }
 });
 
@@ -50,7 +49,7 @@ function sendData(data) {
     client.sendEvent(message, printResultFor('send'));
 }
 
-function getDeviceInfo(err, deviceInfo, res) {
+function connectDevice(err, deviceInfo, res) {
     if (deviceInfo) {
         var deviceString = 'HostName=PRIX.azure-devices.net;DeviceId=' + deviceInfo.deviceId + ';SharedAccessKey=' + deviceInfo.authentication.SymmetricKey.primaryKey;
 
