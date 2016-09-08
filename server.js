@@ -5,7 +5,7 @@ var app = express();
 var iothub = require('azure-iothub');
 var i2c = require('i2c-bus');
 
-var deviceId = 'myFirstNodeDevice';
+var deviceId = 'prix-1';
 var connectionString = 'HostName=PRIX.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=QYtJqH9+59PQ5IdOszsCzR30kVJk1302zl5gEzz3pA0=';
 
 var registry = iothub.Registry.fromConnectionString(connectionString);
