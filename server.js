@@ -1,12 +1,8 @@
-var express = require('express');
-var child = require('child_process');
-var app = express();
-
 var iothub = require('azure-iothub');
 var i2c = require('i2c-bus');
 
 var deviceId = 'prix-1';
-var connectionString = 'HostName=PRIX.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=QYtJqH9+59PQ5IdOszsCzR30kVJk1302zl5gEzz3pA0=';
+var connectionString = 'HostName=prix.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=P0+Yi9IHdqN/35go3aroNPD1HFMn9ggwUSzit0w6QA0=';
 
 var registry = iothub.Registry.fromConnectionString(connectionString);
 
@@ -76,30 +72,3 @@ function getDeviceInfo(err, deviceInfo, res) {
         client.open(connectCallback);
     }
 };
-
-app.set('port', (process.env.PORT || 8080));
-
-app.get('/update/', function (req, res) {
-    child.exec('git pull', function (error, stdout, stderr) {
-        if (!error) {
-            console.log(stdout);
-            child.exec('npm install', function (error, stdout, stderr) {
-                if (!error) {
-                    res.status(200).send('updated');
-                    console.log(stdout);
-                    child.exec('sudo reboot', function (error, stdout, stderr) {
-                        if (!error) {
-                            console.log(stdout);
-                            process.exit()
-                        } else console.log(stderr);
-                    });
-                    process.exit();
-                } else console.log(stderr);
-            });
-        } else console.log(stderr);
-    });
-});
-
-app.listen(app.get('port'), function () {
-    console.log('Node app is running on port', app.get('port'));
-});
