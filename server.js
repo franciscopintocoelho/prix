@@ -16,7 +16,7 @@ var client;
 var bus = i2c.openSync(1);
 var dist, address = 0x70;
 
-var state = -1;
+var state = -1, distance;
 
 device.deviceId = deviceId;
 registry.create(device, function (err, deviceInfo, res) {
@@ -55,8 +55,9 @@ function getSensorDistance() {
         setTimeout(function () {
             bus.readWord(address, 2, function (err, data) {
                 if (!err) {
-                    checkDistance(data);
-                    //sendData(data);
+                    distance = data / 255;
+                    checkDistance(distance);
+                    //sendData(distance);
                 }
                 getSensorDistance();
             });
@@ -79,8 +80,9 @@ function printResultFor(op) {
 }
 
 function startVideoState() {
+    state = 0;
     child.exec('omxplayer --loop --no-osd reveal.mp4', function(err, stdout, stderr) {
-        if(!err) state = 0;
+        if(err) state = -1;
     });
 }
 
