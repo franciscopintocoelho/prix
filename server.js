@@ -1,7 +1,7 @@
 var child = require('child_process');
 var i2c = require('i2c-bus');
 
-var AzureIOT = require('./azureiot')('prix-1');
+var AzureIOT = require('./azureiot')('prix-1', 1000);
 
 var bus = i2c.openSync(1);
 var dist, address = 0x70;
@@ -15,7 +15,7 @@ function getSensorDistance() {
                 if (!err) {
                     distance = data / 255;
                     checkDistance(distance);
-                    AzureIOT.sendMessage(distance, state);
+                    AzureIOT.setStatus(distance, state);
                 }
                 getSensorDistance();
             });
@@ -25,7 +25,7 @@ function getSensorDistance() {
 
 function startVideoState() {
     state = 0;
-    child.exec('omxplayer --loop --no-osd reveal.mp4', function(err, stdout, stderr) {
+    child.exec('omxplayer --loop --no-osd --no-keys reveal.mp4', function(err, stdout, stderr) {
         if(err) state = -1;
     });
 }
@@ -34,7 +34,7 @@ function checkDistance(distance) {
     if(!state && distance < 100) {
         state = 1;
 
-        child.exec('omxplayer --no-osd closer.mp4', function(err, stdout, stderr) {
+        child.exec('omxplayer --no-osd --no-keys closer.mp4', function(err, stdout, stderr) {
             if(!err) state = 0;
         });
     }

@@ -1,9 +1,9 @@
 var iothub = require('azure-iothub');
 
-var AzureIOT = function (deviceId) {
+var AzureIOT = function (deviceId, frequency) {
 
   var deviceId = deviceId;
-  var connected = false;
+  var frequency = frequency;
   var connectionString = 'HostName=prix.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=P0+Yi9IHdqN/35go3aroNPD1HFMn9ggwUSzit0w6QA0=';
 
   var registry = iothub.Registry.fromConnectionString(connectionString);
@@ -12,8 +12,7 @@ var AzureIOT = function (deviceId) {
   var Message = require('azure-iot-device').Message;
 
   var device = new iothub.Device(null);
-  var batch = 10, messages = [];
-  var data, message;
+  var data, message, status;
   var client;
 
   device.deviceId = deviceId;
@@ -27,7 +26,7 @@ var AzureIOT = function (deviceId) {
 
   function connectDevice(err, deviceInfo, res) {
     if (!err && deviceInfo) {
-      var deviceString = 'HostName=PRIX.azure-devices.net;DeviceId=' + deviceInfo.deviceId + ';SharedAccessKey=' + deviceInfo.authentication.SymmetricKey.primaryKey;
+      var deviceString = 'HostName=prix.azure-devices.net;DeviceId=' + deviceInfo.deviceId + ';SharedAccessKey=' + deviceInfo.authentication.SymmetricKey.primaryKey;
 
       console.log('Device id: ' + deviceInfo.deviceId);
       console.log('Device key: ' + deviceInfo.authentication.SymmetricKey.primaryKey);
@@ -39,7 +38,16 @@ var AzureIOT = function (deviceId) {
           console.log('Could not connect: ' + err);
         } else {
           console.log('Client connected');
-          connected = true;
+
+          // Create a message and send it to the IoT Hub every second
+          setInterval(function(){
+              data = JSON.stringify(status);
+              message = new Message(data);
+
+              console.log("Sending message: " + message.getData());
+              client.sendEvent(message, printResultFor('send'));
+              
+          }, frequency);
         }
       };
 
@@ -47,18 +55,8 @@ var AzureIOT = function (deviceId) {
     }
   };
 
-  function sendMessage(distance, state) {
-    if(!connected) return;
-
-    messages.push({ deviceId: deviceId, distance: distance, state: state });
-
-    if(messages.length >= batch) {
-      data = JSON.stringify(messages);
-      message = new Message(data);
-      console.log('sending ' + messages.length + ' events in a batch');
-      client.sendEvent(message, printResultFor('send'));
-      messages = [];
-    }
+  function setStatus(distance, state) {
+    status = { deviceId: deviceId, distance: distance, state: state };
   }
 
   function printResultFor(op) {
@@ -68,10 +66,9 @@ var AzureIOT = function (deviceId) {
     };
   }
 
-
   return {
-    sendMessage: function (distance, state) {
-      sendMessage(distance, state);
+    setStatus: function (distance, state) {
+      setStatus(distance, state);
     }
   };
 };
