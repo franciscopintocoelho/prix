@@ -13,6 +13,7 @@ var AzureIOT = function (deviceId) {
 
   var device = new iothub.Device(null);
   var batch = 10, messages = [];
+  var data, message;
   var client;
 
   device.deviceId = deviceId;
@@ -49,17 +50,14 @@ var AzureIOT = function (deviceId) {
   function sendMessage(distance, state) {
     if(!connected) return;
 
-    var data = JSON.stringify({ deviceId: deviceId, distance: distance, state: state });
-    var message = new Message(data);
-
-    messages.push(message);
+    messages.push({ deviceId: deviceId, distance: distance, state: state });
 
     if(messages.length >= batch) {
+      data = JSON.stringify(messages);
+      message = new Message(data);
       console.log('sending ' + messages.length + ' events in a batch');
-      client.sendEventBatch(messages, printResultFor('send'));
+      client.sendEvent(message, printResultFor('send'));
       messages = [];
-    } else {
-      //console.log("Sending batch: " + message.getData());
     }
   }
 
