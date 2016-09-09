@@ -45,10 +45,10 @@ var AzureIOT = function (deviceId) {
     }
   };
 
-  function sendMessage(data) {
+  function sendMessage(distance, state) {
     if(!connected) return;
 
-    var data = JSON.stringify({ deviceId: deviceId, distance: (data / 255), state: state });
+    var data = JSON.stringify({ deviceId: deviceId, distance: distance, state: state });
     var message = new Message(data);
     console.log("Sending message: " + message.getData());
     client.sendEvent(message, printResultFor('send'));
@@ -63,8 +63,8 @@ var AzureIOT = function (deviceId) {
 
 
   return {
-    sendMessage: function (data) {
-      sendMessage(data);
+    sendMessage: function (distance, state) {
+      sendMessage(distance, state);
     }
   };
 };

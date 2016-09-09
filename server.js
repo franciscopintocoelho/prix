@@ -15,7 +15,7 @@ function getSensorDistance() {
                 if (!err) {
                     distance = data / 255;
                     checkDistance(distance);
-                    AzureIOT.sendMessage(distance);
+                    AzureIOT.sendMessage(distance, state);
                 }
                 getSensorDistance();
             });
