@@ -13,7 +13,7 @@ function getSensorDistance() {
         setTimeout(function () {
             bus.readWord(address, 2, function (err, data) {
                 if (!err) {
-                    distance = data / 255;
+                    distance = Math.ceil(data / 255);
                     checkDistance(distance);
                     AzureIOT.setStatus(distance, state);
                 }
