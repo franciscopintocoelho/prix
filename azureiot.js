@@ -1,8 +1,9 @@
 var iothub = require('azure-iothub');
 
-var AzureIOT = function (app) {
+var AzureIOT = function (deviceId) {
 
-  var deviceId = 'prix-1';
+  var deviceId = deviceId;
+  var connected = false;
   var connectionString = 'HostName=prix.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=P0+Yi9IHdqN/35go3aroNPD1HFMn9ggwUSzit0w6QA0=';
 
   var registry = iothub.Registry.fromConnectionString(connectionString);
@@ -23,7 +24,7 @@ var AzureIOT = function (app) {
   });
 
   function connectDevice(err, deviceInfo, res) {
-    if (deviceInfo) {
+    if (!err && deviceInfo) {
       var deviceString = 'HostName=PRIX.azure-devices.net;DeviceId=' + deviceInfo.deviceId + ';SharedAccessKey=' + deviceInfo.authentication.SymmetricKey.primaryKey;
 
       console.log('Device id: ' + deviceInfo.deviceId);
@@ -36,6 +37,7 @@ var AzureIOT = function (app) {
           console.log('Could not connect: ' + err);
         } else {
           console.log('Client connected');
+          connected = true;
         }
       };
 
@@ -43,7 +45,9 @@ var AzureIOT = function (app) {
     }
   };
 
-  function sendData(data) {
+  function sendMessage(data) {
+    if(!connected) return;
+
     var data = JSON.stringify({ deviceId: deviceId, distance: (data / 255), state: state });
     var message = new Message(data);
     console.log("Sending message: " + message.getData());
@@ -59,8 +63,8 @@ var AzureIOT = function (app) {
 
 
   return {
-    sendMessage: function () {
-
+    sendMessage: function (data) {
+      sendMessage(data);
     }
   };
 };

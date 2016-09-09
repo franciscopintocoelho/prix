@@ -1,7 +1,7 @@
 var child = require('child_process');
 var i2c = require('i2c-bus');
 
-var AzureIOT = require('./azureiot');
+var AzureIOT = require('./azureiot')('prix-1');
 
 var bus = i2c.openSync(1);
 var dist, address = 0x70;
