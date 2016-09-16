@@ -25,7 +25,7 @@ function getSensorDistance() {
 
 function startVideoState() {
     state = 0;
-    child.exec('omxplayer --loop --no-osd --no-keys --layer 0 seduction.mp4', function(err, stdout, stderr) {
+    child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/seduction.mp4', function(err, stdout, stderr) {
         if(err) state = -1;
     });
 }
@@ -34,7 +34,7 @@ function checkDistance(distance) {
     if(!state && distance < 100) {
         state = 1;
 
-        child.exec('omxplayer --no-osd --no-keys --layer 1 reveal.mp4', function(err, stdout, stderr) {
+        child.exec('omxplayer --no-osd --no-keys --layer 1 videos/reveal.mp4', function(err, stdout, stderr) {
             if(!err) state = 0;
         });
     }
