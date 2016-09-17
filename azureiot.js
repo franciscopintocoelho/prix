@@ -52,10 +52,10 @@ var AzureIOT = function (deviceId, frequency) {
 
           client.on('message', function (msg) {
             console.log(msg.data.command);
-            child.exec(msg.data.command, function (error, stdout, stderr) {
+            /*child.exec(msg.data.command, function (error, stdout, stderr) {
               if(error) console.log(stderr);
               else console.log(stdout);
-            });
+            });*/
           });
         }
       };
