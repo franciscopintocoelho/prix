@@ -14,8 +14,10 @@ function getSensorDistance() {
             bus.readWord(address, 2, function (err, data) {
                 if (!err) {
                     distance = Math.ceil(data / 255);
-                    checkDistance(distance);
-                    AzureIOT.setStatus(distance, state);
+                    if(distance > 10) {
+                        checkDistance(distance);
+                        AzureIOT.setStatus(distance, state);
+                    }
                 }
                 getSensorDistance();
             });

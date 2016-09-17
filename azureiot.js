@@ -48,6 +48,10 @@ var AzureIOT = function (deviceId, frequency) {
               client.sendEvent(message, printResultFor('send'));
               
           }, frequency);
+
+          client.on('message', function (msg) {
+            console.log(msg.data);
+          });
         }
       };
 
