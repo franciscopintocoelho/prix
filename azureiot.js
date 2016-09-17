@@ -46,7 +46,7 @@ var AzureIOT = function (deviceId, frequency) {
             message = new Message(data);
 
             console.log("Sending message: " + message.getData());
-            client.sendEvent(message, printResultFor('send'));
+            //client.sendEvent(message, printResultFor('send'));
 
           }, frequency);
 
