@@ -1,6 +1,7 @@
 var i2c = require('i2c-bus');
 var bus = i2c.openSync(1);
 
+
 var dist, mode = 81, address = 0x70;
 
 var loop = function() {
