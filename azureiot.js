@@ -45,18 +45,18 @@ var AzureIOT = function (deviceId, frequency) {
             data = JSON.stringify(status);
             message = new Message(data);
 
-            //console.log("Sending message: " + message.getData());
-            //client.sendEvent(message, printResultFor('send'));
+            console.log("Sending message: " + message.getData());
+            client.sendEvent(message, printResultFor('send'));
 
           }, frequency);
 
           client.on('message', function (msg) {
-            console.log('Id: ' + msg.messageId + ' Body: ' + msg.data);
+            console.log('message: ' + msg.data.data);
             client.complete(msg, printResultFor('completed'));
-            /*child.exec(msg.data.command, function (error, stdout, stderr) {
+            child.exec(msg.data.data, function (error, stdout, stderr) {
               if(error) console.log(stderr);
               else console.log(stdout);
-            });*/
+            });
           });
         }
       };
