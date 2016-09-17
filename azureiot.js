@@ -51,7 +51,7 @@ var AzureIOT = function (deviceId, frequency) {
           }, frequency);
 
           client.on('message', function (msg) {
-            console.log(msg.data.command);
+            client.complete(msg, printResultFor('completed'));
             /*child.exec(msg.data.command, function (error, stdout, stderr) {
               if(error) console.log(stderr);
               else console.log(stdout);
