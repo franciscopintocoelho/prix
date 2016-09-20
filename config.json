@@ -2,7 +2,7 @@
     "background": "seduction.mp4",
     "steps": [{
         "video": "tv.mp4",
-        "distance": 100
+        "distance": 50
     },{
         "video": "reveal.mp4",
         "distance": 200
