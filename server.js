@@ -7,7 +7,7 @@ var AzureIOT = require('./azureiot')(config.azureIOT);
 var bus = i2c.openSync(1);
 var dist, address = 0x70;
 
-var state = -1, playing = false, distance;
+var state = -1, playing = false, distance, last;
 var steps = config.steps;
 
 //TODO: json && orderby distance
@@ -30,7 +30,7 @@ function getSensorDistance() {
 };
 
 function startVideoState() {
-    state = 0;
+    state = last = 0;
     child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
         if (err) state = -1;
     });
@@ -41,9 +41,11 @@ function checkDistance(distance) {
 
     if (state != -1 && !playing) {
         for(i = 0; i < steps.length; i++) {
-            if(state != (i+1) && distance < steps[i].distance) {
-                video = steps[i].video;
-                state = (i+1);
+            if(distance < steps[i].distance) {
+                if(last != (i+1)) {
+                    video = steps[i].video;
+                    last = state = (i+1);
+                }
                 break;
             }
         }
