@@ -31,7 +31,7 @@ function getSensorDistance() {
 
 function startVideoState() {
     state = last = 0;
-    child.exec('omxplayer --loop --no-osd --no-keys -b --layer 0 videos/' + config.background, function (err, stdout, stderr) {
+    child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
         if (err) state = -1;
     });
 }
@@ -52,7 +52,7 @@ function checkDistance(distance) {
 
         if (video) {
             playing = true;
-            child.exec('omxplayer --no-osd --no-keys -o both -b --layer ' + state + ' videos/' + video, function (err, stdout, stderr) {
+            child.exec('omxplayer --no-osd --no-keys -o both --layer ' + state + ' videos/' + video, function (err, stdout, stderr) {
                 playing = false;
                 state = 0;
             });
