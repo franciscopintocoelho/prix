@@ -1,15 +1,16 @@
 var iothub = require('azure-iothub');
 var child = require('child_process');
 
-var AzureIOT = function (deviceId, frequency) {
+var AzureIOT = function (config) {
 
-  var deviceId = deviceId;
-  var frequency = frequency;
-  var connectionString = 'HostName=prix.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=P0+Yi9IHdqN/35go3aroNPD1HFMn9ggwUSzit0w6QA0=';
+  var deviceId = config.deviceId;
+  var interval = config.interval;
+  var hostname = config.hostname;
+  var connectionString = config.connectionString;
 
   var registry = iothub.Registry.fromConnectionString(connectionString);
 
-  var clientFromConnectionString = require('azure-iot-device-amqp').clientFromConnectionString;
+  var clientFromConnectionString = require('azure-iot-device-' + config.protocol).clientFromConnectionString;
   var Message = require('azure-iot-device').Message;
 
   var device = new iothub.Device(null);
@@ -27,7 +28,7 @@ var AzureIOT = function (deviceId, frequency) {
 
   function connectDevice(err, deviceInfo, res) {
     if (!err && deviceInfo) {
-      var deviceString = 'HostName=prix.azure-devices.net;DeviceId=' + deviceInfo.deviceId + ';SharedAccessKey=' + deviceInfo.authentication.SymmetricKey.primaryKey;
+      var deviceString = 'HostName=' + hostname + ';DeviceId=' + deviceInfo.deviceId + ';SharedAccessKey=' + deviceInfo.authentication.SymmetricKey.primaryKey;
 
       console.log('Device id: ' + deviceInfo.deviceId);
       console.log('Device key: ' + deviceInfo.authentication.SymmetricKey.primaryKey);
@@ -48,7 +49,7 @@ var AzureIOT = function (deviceId, frequency) {
             console.log("Sending message: " + message.getData());
             client.sendEvent(message, printResultFor('send'));
 
-          }, frequency);
+          }, interval);
 
           client.on('message', function (msg) {
             console.log('message: ' + msg.data.data);
