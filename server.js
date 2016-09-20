@@ -41,9 +41,11 @@ function checkDistance(distance) {
 
     if (state != -1 && !playing) {
         for(i = 0; i < steps.length; i++) {
-            if(last != (i+1) && distance < steps[i].distance) {
-                video = steps[i].video;
-                last = state = (i+1);
+            if(distance < steps[i].distance) {
+                if(last != (i+1)) {
+                    video = steps[i].video;
+                    last = state = (i+1);
+                }
                 break;
             }
         }
