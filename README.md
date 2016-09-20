@@ -7,7 +7,9 @@ Requirements:
 3. Expand Filesystem
 4. Remove Login
 5. Remove Power Sleep
-6. Enable I2C Bus
+6. Enable I2C Bus:
+    sudo modprobe -r i2c_bcm2708
+    sudo modprobe i2c_bcm2708 baudrate=32000
 7. Install I2C Tools
 8. Install NodeJS
 9. Install Git
