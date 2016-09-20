@@ -3,7 +3,7 @@
         "connectionString": "HostName=prix.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=P0+Yi9IHdqN/35go3aroNPD1HFMn9ggwUSzit0w6QA0=",
         "hostname": "prix.azure-devices.net",
         "deviceId": "prix-1",
-        "protocol": "amqp",
+        "protocol": "http",
         "interval": 1000
     },
     "background": "seduction.mp4",

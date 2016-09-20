@@ -7,7 +7,7 @@ var AzureIOT = require('./azureiot')(config.azureIOT);
 var bus = i2c.openSync(1);
 var dist, address = 0x70;
 
-var state = -1, playing = false, distance, last;
+var state = -1, playing = false, distance, last, interval;
 var steps = config.steps;
 
 //TODO: json && orderby distance
@@ -52,9 +52,14 @@ function checkDistance(distance) {
 
         if (video) {
             playing = true;
+            clearInterval(interval);
             child.exec('omxplayer --no-osd --no-keys -o both --layer ' + state + ' videos/' + video, function (err, stdout, stderr) {
                 playing = false;
                 state = 0;
+
+                interval = setTimeout(function() {
+                    last = 0;
+                }, 5000)
             });
         }
     }
