@@ -53,13 +53,13 @@ function checkDistance(distance) {
         if (video) {
             playing = true;
             clearInterval(interval);
-            child.exec('omxplayer --no-osd --no-keys -o both --layer ' + state + ' videos/' + video, function (err, stdout, stderr) {  
+            child.exec('omxplayer --no-osd --no-keys -o both --layer ' + state + ' videos/' + video, function (err, stdout, stderr) {
+                playing = false;
                 state = 0;
 
                 interval = setTimeout(function() {
-                    playing = false;
                     last = 0;
-                }, 5000)
+                }, 5000);
             });
         }
     }
