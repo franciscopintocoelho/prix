@@ -10,7 +10,7 @@ var dist, address = 0x70;
 var state = -1, playing = false, distance, interval;
 var steps = config.steps;
 
-//TODO: json orderby distance
+//TODO: json order by distance
 
 function getSensorDistance() {
     bus.writeByte(address, 0, 81, function (err) {
