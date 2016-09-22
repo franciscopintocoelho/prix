@@ -53,7 +53,7 @@ function checkDistance(distance) {
             clearInterval(interval);
             child.exec('omxplayer --no-osd --no-keys -o both --layer ' + state + ' videos/' + video, function (err, stdout, stderr) {
                 state = 0;
-                setTimetout(function() {
+                setTimeout(function() {
                     playing = false;
                 }, 2000);
             });
