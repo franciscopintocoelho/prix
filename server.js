@@ -34,6 +34,19 @@ function getSensorDistance() {
     });
 };
 
+bus.writeByte(address, 0, mode, function() {
+    setTimeout(function() {
+        bus.readByte(address, 0, function(err, data) {
+            console.log(err);
+            console.log(data);
+            bus.readWord(address, 2, function(err, data) {
+                if(!err) console.log(data / 255);
+                loop();
+            });
+        });
+    }, 50);
+});
+
 function startVideoState() {
     state = 0;
     child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
