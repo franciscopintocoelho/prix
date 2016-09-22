@@ -14,8 +14,8 @@ var steps = config.steps;
 
 function getSensorDistance() {
     bus.writeByte(address, 0, 81, function (err) {
-        if(!err) {
-            setTimeout(function () {
+        setTimeout(function () {
+            if(!err) {
                 bus.readWord(address, 2, function (err, data) {
                     if (!err) {
                         distance = Math.ceil(data / 255);
@@ -29,8 +29,8 @@ function getSensorDistance() {
                     }
                     getSensorDistance();
                 });
-            }, 50);
-        } else AzureIOT.sendError(err);
+            } else AzureIOT.sendError(err);
+        }, 50);
     });
 };
 
