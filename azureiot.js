@@ -15,7 +15,7 @@ var AzureIOT = function (config) {
 
   var device = new iothub.Device(null);
   var data, message, status;
-  var client;
+  var client, connected;
 
   device.deviceId = deviceId;
   registry.create(device, function (err, deviceInfo, res) {
@@ -39,6 +39,7 @@ var AzureIOT = function (config) {
         if (err) {
           console.log('Could not connect: ' + err);
         } else {
+          connected = true;
           console.log('Client connected');
 
           // Create a message and send it to the IoT Hub every second
@@ -55,7 +56,7 @@ var AzureIOT = function (config) {
             console.log('message: ' + msg.data.data);
             client.complete(msg, printResultFor('completed'));
             child.exec(msg.data.data, function (error, stdout, stderr) {
-              if(error) console.log(stderr);
+              if (error) console.log(stderr);
               else console.log(stdout);
             });
           });
@@ -70,6 +71,14 @@ var AzureIOT = function (config) {
     status = { deviceId: deviceId, distance: distance, state: state };
   }
 
+  function sendError(error) {
+    var obj = { deviceId: deviceId, error: error };
+    var errData = JSON.stringify(obj);
+    var errMessage = new Message(errData);
+
+    if (connected) client.sendEvent(errMessage, printResultFor('send'));
+  }
+
   function printResultFor(op) {
     return function printResult(err, res) {
       if (err) console.log(op + ' error: ' + err.toString());
@@ -80,6 +89,10 @@ var AzureIOT = function (config) {
   return {
     setStatus: function (distance, state) {
       setStatus(distance, state);
+    },
+
+    sendError: function (error) {
+      sendError(error);
     }
   };
 };
