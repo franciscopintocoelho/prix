@@ -10,7 +10,7 @@ var dist, address = 0x70;
 var state = -1, playing = false, distance, interval;
 var steps = config.steps;
 
-//TODO: json && orderby distance
+//TODO: json orderby distance
 
 function getSensorDistance() {
     bus.writeByte(address, 0, 81, function (err) {
@@ -19,11 +19,14 @@ function getSensorDistance() {
                 bus.readWord(address, 2, function (err, data) {
                     if (!err) {
                         distance = Math.ceil(data / 255);
+                        AzureIOT.setStatus(distance, state);
                         if (distance > 10) {
                             checkDistance(distance);
-                            AzureIOT.setStatus(distance, state);
                         } else console.log('ignored: ', distance);
-                    } else AzureIOT.sendError(err);
+                    } else {
+                        AzureIOT.setStatus(0, state);
+                        AzureIOT.sendError(err);
+                    }
                     getSensorDistance();
                 });
             }, 50);

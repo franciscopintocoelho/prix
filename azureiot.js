@@ -44,12 +44,13 @@ var AzureIOT = function (config) {
 
           // Create a message and send it to the IoT Hub every second
           setInterval(function () {
-            data = JSON.stringify(status);
-            message = new Message(data);
+            if (status.distance) {
+              data = JSON.stringify(status);
+              message = new Message(data);
 
-            console.log("Sending message: " + message.getData());
-            client.sendEvent(message, printResultFor('send'));
-
+              console.log("Sending message: " + message.getData());
+              client.sendEvent(message, printResultFor('send'));
+            }
           }, interval);
 
           client.on('message', function (msg) {
