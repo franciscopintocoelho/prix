@@ -71,5 +71,5 @@ function start() {
     startVideoState();
     getSensorDistance();
 }
-
+    
 start();
