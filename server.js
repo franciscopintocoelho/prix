@@ -68,7 +68,7 @@ function checkDistance(distance) {
                 setTimeout(function() {
                     playing = false;   
                     state = 0;
-                }, 5000);
+                }, 1000);
             });
         }
     }
