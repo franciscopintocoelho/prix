@@ -32,7 +32,7 @@ var AzureIOT = function (config) {
 
       console.log('Device id: ' + deviceInfo.deviceId);
       console.log('Device key: ' + deviceInfo.authentication.SymmetricKey.primaryKey);
-
+      
       client = clientFromConnectionString(deviceString);
 
       var connectCallback = function (err) {
@@ -41,6 +41,8 @@ var AzureIOT = function (config) {
         } else {
           connected = true;
           console.log('Client connected');
+
+          sendError({ message: 'Client connected', version: '1.0' });
 
           // Create a message and send it to the IoT Hub every second
           setInterval(function () {

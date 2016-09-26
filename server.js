@@ -16,20 +16,19 @@ function getSensorDistance() {
     bus.writeByte(address, 0, 81, function (err) {
         if(!err) {
             setTimeout(function () {
-                
-                    bus.readWord(address, 2, function (err, data) {
-                        if (!err) {
-                            distance = Math.ceil(data / 255);
-                            AzureIOT.setStatus(distance, state);
-                            if (distance > 10) {
-                                checkDistance(distance);
-                            } else console.log('ignored: ', distance);
-                        } else {
-                            AzureIOT.setStatus(0, state);
-                            AzureIOT.sendError(err);
-                        }
-                        getSensorDistance();
-                    });
+                bus.readWord(address, 2, function (err, data) {
+                    if (!err) {
+                        distance = Math.ceil(data / 255);
+                        AzureIOT.setStatus(distance, state);
+                        if (distance > 10) {
+                            checkDistance(distance);
+                        } else console.log('ignored: ', distance);
+                    } else {
+                        AzureIOT.setStatus(0, state);
+                        AzureIOT.sendError(err);
+                    }
+                    getSensorDistance();
+                });
             }, 50);
         } else {
             AzureIOT.sendError(err);
