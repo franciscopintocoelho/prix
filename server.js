@@ -64,10 +64,10 @@ function checkDistance(distance) {
             child.exec('omxplayer --no-osd --no-keys -o both --layer ' + state + ' videos/' + video, function (err, stdout, stderr) {
                 if(err) AzureIOT.sendError(err);
 
+                state = 0;
                 setTimeout(function() {
-                    playing = false;   
-                    state = 0;
-                }, 1000);
+                    playing = false;
+                }, 3000);
             });
         }
     }
