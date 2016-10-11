@@ -127,7 +127,7 @@ function checkDistance(distance) {
 
 function start() {
     startVideoState();
-    getSensorDistance();
+    getSimulatedSensorDistance();
 }
 
 start();
