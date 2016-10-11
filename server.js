@@ -11,8 +11,8 @@ var dist, address = 0x70;
 var state = -1, playing = false, distance, interval;
 var steps = config.steps;
 
-var manager = new omxplayer();
-var background, videos;
+var manager, background, videos;
+
 
 function getSensorDistance() {
     bus.writeByte(address, 0, 81, function (err) {
@@ -73,6 +73,8 @@ function getSimulatedSensorDistance() {
 function startVideoState() {
     state = 0;
     videos = [];
+    manager = new omxplayer();
+    manager.setVideosDirectory('videos');
     background = manager.create(config.background);
     
     for(var i = 0; i < config.steps.length; i++) {
