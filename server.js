@@ -1,5 +1,5 @@
 var child = require('child_process');
-var omxplayer = require('omx-player');
+var omxplayer = require('omx-manager');
 var i2c = require('i2c-bus');
 
 var config = require('./config.json');
