@@ -41,12 +41,14 @@ var AzureIOT = function (config) {
         } else {
           connected = true;
           console.log('Client connected');
+          
+          status = { distance: -1, state: -1 };
 
           sendError({ message: 'Client connected', version: '1.0' });
 
           // Create a message and send it to the IoT Hub every second
           setInterval(function () {
-            if (status.distance) {
+            if (status && status.distance) {
               data = JSON.stringify(status);
               message = new Message(data);
 

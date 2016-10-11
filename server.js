@@ -8,11 +8,10 @@ var AzureIOT = require('./azureiot')(config.azureIOT);
 var bus = i2c.openSync(1);
 var dist, address = 0x70;
 
-var state = -1, playing = false, distance, interval;
+var state = -1, playing = false, distance = 130, interval;
 var steps = config.steps;
 
 var manager, background, videos;
-
 
 function getSensorDistance() {
     bus.writeByte(address, 0, 81, function (err) {
@@ -59,8 +58,6 @@ function getSimulatedSensorDistance() {
                 break;
         }
     });
-
-    distance = 130;
 
     setInterval(function () {
         AzureIOT.setStatus(distance, state);
