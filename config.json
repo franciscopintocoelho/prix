@@ -8,24 +8,13 @@
     },
     "background": "seduction.mp4",
     "steps": [{
-        "video": "seducir.mp4",
-        "complete": false,
         "distance": 200,
-        "next": 0
+        "videos": ["seducir.mp4"]
     },{
-        "video": "reveal.mp4",
-        "complete": true,
-        "distance": 100,
-        "next": 3
+        "videos": ["reveal.mp4", "acercate.mp4"],
+        "distance": 100
     },{
-        "video": "acercate.mp4",
-        "complete": false,
-        "distance": null,
-        "next": 0
-    },{
-        "video": "tv.mp4",
-        "complete": true,
-        "distance": 50,
-        "next": 0
+        "video": ["tv.mp4"],
+        "distance": 50
     }]
 }

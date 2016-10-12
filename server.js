@@ -98,17 +98,18 @@ function createInstance(step, index) {
     var instance = manager.create([step.video], { '--no-keys': true, '--no-osd': true, '--layer': layer });
 
     instance.on('end', function() {
+        console.log('end');
         if(state != layer) return;
 
-        if(step.next != 0) {
+        /*if(step.next != 0) {
             lockVideo(2000);
             state = step.next
             video = videos[state-1];
             video.play();
-        } else {
+        } else {*/
             lockVideo(10000);
             state = 0;
-        }
+        //}
     });
 
     videos.push(instance);
@@ -134,13 +135,13 @@ function checkDistance(distance) {
                 state = 2;
             }
             break;
-        case 3:
+        /*case 3:
             if(distance <= steps[3].distance) {
                 video = videos[3];
                 playVideo();
                 state = 4;
             }
-            break;
+            break;*/
     }
 };
 
