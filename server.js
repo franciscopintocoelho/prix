@@ -83,13 +83,15 @@ function startVideoState() {
             AzureIOT.sendError(err);
             state = -1;
         }
-    });*/   
+    });*/ 
 }
 
 function checkDistance(distance) {
+    var len = steps.length;
+    
     if (state != -1 && !playing) {
-        for (var i = 0; i < steps.length; i++) {
-            if (distance < steps[i].distance) {
+        for (var i = len - 1; i >= 0; i--) {
+            if (distance <= steps[i].distance) {
                 video = videos[i];
                 state = i;
                 break;
@@ -108,7 +110,7 @@ function checkDistance(distance) {
             });*/
 
             video.on('end', function() {
-                console.log('end')
+                console.log('end');
                 playing = false;
             });
 
