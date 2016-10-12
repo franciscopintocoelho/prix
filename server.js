@@ -98,8 +98,9 @@ function createInstance(step, index) {
     var instance = manager.create(step.video, { '--no-keys': true, '--no-osd': true, '--layer': layer });
 
     instance.on('end', function() {
+        console.log(state, layer);
         if(state != layer) return;
-        
+
         state = step.next;
         if(state != 0) {
             video = videos[state-1];
