@@ -8,7 +8,7 @@ var AzureIOT = require('./azureiot')(config.azureIOT);
 var bus = i2c.openSync(1);
 var dist, address = 0x70;
 
-var state = -1, playing = false, distance = 130, interval;
+var state = -1, playing = false, distance = 210, interval;
 var manager, background, videos, video;
 var steps = config.steps;
 
