@@ -74,6 +74,7 @@ function startVideoState() {
     videos = [];
     
     manager = new omxplayer();
+    manager.enableNativeLoop();
     manager.setVideosDirectory('videos');
     
     for(var i = 0; i < config.steps.length; i++) {
