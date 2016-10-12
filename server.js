@@ -138,7 +138,7 @@ function checkDistance(distance) {
     }
 
     if (video) {
-        playVideo();
+        video.play();
         lockVideo(1000);
     }
 };
