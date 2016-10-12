@@ -105,6 +105,7 @@ function createInstance(step, index) {
         if(state != 0) {
             video = videos[state-1];
             video.play();
+            lockVideo(2000);
         } else lockVideo(15000);
     });
 
@@ -139,7 +140,7 @@ function checkDistance(distance) {
 
     if (video) {
         video.play();
-        lockVideo(5000);
+        lockVideo(2000);
     }
 };
 
