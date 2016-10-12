@@ -95,7 +95,7 @@ function startVideoState() {
 
 function createInstance(step, index) {
     var layer = index + 1;
-    var instance = manager.create(step.video, { '--no-keys': true, '--no-osd': true, '--layer': layer });
+    var instance = manager.create([step.video], { '--no-keys': true, '--no-osd': true, '--layer': layer });
 
     instance.on('end', function() {
         if(state != layer) return;
@@ -106,7 +106,7 @@ function createInstance(step, index) {
             video = videos[state-1];
             video.play();
         } else {
-            lockVideo(15000);
+            lockVideo(10000);
             state = 0;
         }
     });
