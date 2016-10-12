@@ -11,10 +11,10 @@
         "distance": 200,
         "videos": ["seducir.mp4"]
     },{
-        "videos": ["reveal.mp4", "acercate.mp4"],
-        "distance": 100
+        "distance": 100,
+        "videos": ["reveal.mp4", "acercate.mp4"]
     },{
-        "video": ["tv.mp4"],
-        "distance": 50
+        "distance": 50,
+        "videos": ["tv.mp4"]
     }]
 }
