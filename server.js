@@ -131,9 +131,9 @@ function checkDistance(distance) {
 
     if (video) {
         playing = true;
-        video.play();
+        video.play();   
         
-        if(last && last.isPlaying()) {
+        if(last && last.getStatus().playing) {
             last.stop();
         }
     }
