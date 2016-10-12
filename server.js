@@ -79,9 +79,11 @@ function startVideoState() {
     manager.setVideosDirectory('videos');
     
     for(var i = 0; i < config.steps.length; i++) {
-        instance = manager.create(config.steps[i].video, { '--no-keys': true, '--no-osd': true, '--layer': 1 });
+        instance = manager.create(config.steps[i].video, { '--no-keys': true, '--no-osd': true, '--layer': i });
         instance.on('end', function() {
+            console.log('end');
             playing = false;
+            //state = 0;
         });
         videos.push(instance);
     }
@@ -89,39 +91,46 @@ function startVideoState() {
     //background = manager.create(config.background, { '--loop': true, '--no-keys': true, '--no-osd': true, '--layer': 0 });
     //background.play();
 
-    child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
+    /*child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
         if (err) {
             AzureIOT.sendError(err);
             state = -1;
         }
-    }); 
+    });*/
 }
 
 function checkDistance(distance) {
-    var len = steps.length;
+    var len = steps.length, last;
     
-    if (state != -1 && !playing) {
-        for (var i = len - 1; i >= 0; i--) {
-            if (distance <= steps[i].distance) {
-                video = videos[i];
-                state = (i+1);
-                break;
+    if (state == -1) return;
+
+    switch(state) {
+        case 0:
+            if(distance <= steps[0].distance) {
+               video = videos[0];
+               state = 1; 
             }
-        }
+            break;
+        case 1:
+            if(distance <= steps[1].distance) {
+                last = video;
+                video = videos[1];
+                state = 2;
+            }
+            break;
+        case 2:
+            if(!playing && distance <= steps[2].distance) {
+                last = video;
+                video = videos[2];
+                state = 3;
+            }
+            break;
+    }
 
-        if (video) {
-            playing = true;
-            /*child.exec('omxplayer --no-osd --no-keys -o both --layer ' + state + ' videos/' + video, function (err, stdout, stderr) {
-                if (err) AzureIOT.sendError(err);
-
-                state = 0;
-                setTimeout(function () {
-                    playing = false;
-                }, 3000);
-            });*/
-
-            video.play();
-        }
+    if (video) {
+        video.play();
+        playing = true;
+        if(last) last.stop();
     }
 };
 
