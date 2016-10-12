@@ -132,7 +132,7 @@ function checkDistance(distance) {
     if (video) {
         video.play();
         playing = true;
-        //if(last) last.stop();
+        if(last) last.stop();
     }
 };
 
