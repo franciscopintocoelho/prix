@@ -101,12 +101,13 @@ function createInstance(step, index) {
         console.log(state, layer);
         if(state != layer) return;
 
-        state = step.next;
-        if(state != 0) {
+        if(step.next != 0) {
+            lockVideo(2000);
             video = videos[state-1];
             video.play();
-            lockVideo(2000);
         } else lockVideo(15000);
+
+        state = step.next;
     });
 
     videos.push(instance);
@@ -121,28 +122,31 @@ function checkDistance(distance) {
         case 0:
             if(distance <= steps[0].distance) {
                video = videos[0];
+               playVideo();
                state = 1; 
             }
             break;
         case 1:
             if(distance <= steps[1].distance) {
                 video = videos[1];
+                playVideo();
                 state = 2;
             }
             break;
         case 3:   
             if(distance <= steps[3].distance) {
                 video = videos[3];
+                playVideo();
                 state = 4;
             }
             break;
     }
-
-    if (video) {
-        video.play();
-        lockVideo(2000);
-    }
 };
+
+function playVideo() {
+    video.play();
+    lockVideo(2000);
+}
 
 function lockVideo(delay) {
     lock = true;
