@@ -78,13 +78,15 @@ function startVideoState() {
     //manager.enableNativeLoop();
     manager.setVideosDirectory('videos');
     
-    for(var i = 0; i < config.steps.length; i++) {
-        instance = manager.create(config.steps[i].video, { '--no-keys': true, '--no-osd': true, '--layer': i });
-        instance.on('end', function() {
-            console.log('end');
-            playing = false;
-            //state = 0;
-        });
+    for(var i = 0; i < steps.length; i++) {
+        instance = manager.create(steps[i].video, { '--no-keys': true, '--no-osd': true, '--layer': i });
+        if(steps[i].complete) {
+            instance.on('end', function() {
+                console.log('end');
+                playing = false;
+                state = 0;
+            });
+        }
         videos.push(instance);
     }
 

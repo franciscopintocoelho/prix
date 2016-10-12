@@ -9,15 +9,19 @@
     "background": "seduction.mp4",
     "steps": [{
         "video": "seducir.mp4",
+        "complete": false,
         "distance": 200
     },{
         "video": "reveal.mp4",
+        "complete": true,
         "distance": 100
     },{
         "video": "acercate.mp4",
+        "complete": false,
         "distance": 80
     },{
         "video": "tv.mp4",
+        "complete": true,
         "distance": 50
     }]
 }
