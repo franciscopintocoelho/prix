@@ -75,6 +75,7 @@ function startVideoState() {
     videos = [];
     
     manager = new omxplayer();
+    //manager.enableNativeLoop();
     manager.setVideosDirectory('videos');
     
     for(var i = 0; i < config.steps.length; i++) {
@@ -84,6 +85,9 @@ function startVideoState() {
         });
         videos.push(instance);
     }
+
+    //background = manager.create(config.background, { '--loop': true, '--no-keys': true, '--no-osd': true, '--layer': 0 });
+    //background.play();
 
     child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
         if (err) {
