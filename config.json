@@ -10,18 +10,22 @@
     "steps": [{
         "video": "seducir.mp4",
         "complete": false,
-        "distance": 200
+        "distance": 200,
+        "next": 0
     },{
         "video": "reveal.mp4",
         "complete": true,
-        "distance": 100
+        "distance": 100,
+        "next": 3
     },{
         "video": "acercate.mp4",
         "complete": false,
-        "distance": 80
+        "distance": 100,
+        "next": 0
     },{
         "video": "tv.mp4",
         "complete": true,
-        "distance": 50
+        "distance": 50,
+        "next": 0
     }]
 }

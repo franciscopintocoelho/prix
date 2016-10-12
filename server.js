@@ -8,7 +8,7 @@ var AzureIOT = require('./azureiot')(config.azureIOT);
 var bus = i2c.openSync(1);
 var dist, address = 0x70;
 
-var state = -1, playing = false, distance = 210, interval;
+var state = -1, distance = 210, interval;
 var manager, background, videos, video;
 var steps = config.steps;
 
@@ -79,15 +79,7 @@ function startVideoState() {
     manager.setVideosDirectory('videos');
     
     for(var i = 0; i < steps.length; i++) {
-        instance = manager.create(steps[i].video, { '--no-keys': true, '--no-osd': true, '--layer': i });
-        if(steps[i].complete) {
-            instance.on('end', function() {
-                console.log('end');
-                playing = false;
-                state = 0;
-            });
-        }
-        videos.push(instance);
+        createInstance(steps[i]);
     }
 
     //background = manager.create(config.background, { '--loop': true, '--no-keys': true, '--no-osd': true, '--layer': 0 });
@@ -99,6 +91,20 @@ function startVideoState() {
             state = -1;
         }
     });*/
+}
+
+function createInstance(step) {
+    var instance = manager.create(step.video, { '--no-keys': true, '--no-osd': true, '--layer': i });
+    
+    instance.on('end', function() {
+        state = step.next;
+        if(state) {
+            video = videos[state-1];
+            video.play();
+        }
+    });
+
+    videos.push(instance);
 }
 
 function checkDistance(distance) {
@@ -115,28 +121,19 @@ function checkDistance(distance) {
             break;
         case 1:
             if(distance <= steps[1].distance) {
-                last = video;
                 video = videos[1];
                 state = 2;
             }
             break;
-        case 2:
-            if(!playing && distance <= steps[2].distance) {
-                last = video;
-                video = videos[2];
-                state = 3;
+        case 3:   
+            if(distance <= steps[3].distance) {
+                video = videos[3];
+                state = 4;
             }
             break;
     }
 
-    if (video) {
-        playing = true;
-        video.play();   
-        
-        /*if(last && last.getStatus().playing) {
-            last.stop();
-        }*/
-    }
+    if (video) video.play();
 };
 
 function start() {
