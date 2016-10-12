@@ -59,16 +59,12 @@ function getSimulatedSensorDistance() {
         }
     });
 
-    var loop = function() {
+    setInterval(function () {
         AzureIOT.setStatus(distance, state);
         if (distance > 10) {
             checkDistance(distance);
         } else console.log('ignored: ', distance);
-
-        loop();
-    };
-
-    loop();
+    }, 10);
 };
 
 function startVideoState() {
@@ -92,7 +88,7 @@ function startVideoState() {
 
 function checkDistance(distance) {
     var len = steps.length;
-
+    
     if (state != -1 && !playing) {
         for (var i = len - 1; i >= 0; i--) {
             if (distance <= steps[i].distance) {
