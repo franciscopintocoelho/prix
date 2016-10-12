@@ -95,7 +95,7 @@ function startVideoState() {
 
 function createInstance(step, index) {
     var layer = index + 1;
-    var instance = manager.create([step.video], { '--no-keys': true, '--no-osd': true, '--layer': layer });
+    var instance = manager.create(step.videos, { '--no-keys': true, '--no-osd': true, '--layer': layer });
 
     instance.on('end', function() {
         console.log('end');
