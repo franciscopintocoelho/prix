@@ -9,9 +9,8 @@ var bus = i2c.openSync(1);
 var dist, address = 0x70;
 
 var state = -1, playing = false, distance = 130, interval;
+var manager, background, videos, video;
 var steps = config.steps;
-
-var manager, background, videos;
 
 function getSensorDistance() {
     bus.writeByte(address, 0, 81, function (err) {
@@ -48,6 +47,7 @@ function getSimulatedSensorDistance() {
     stdin.on('data', function (key) {
         switch (key) {
             case '\u0003':
+                video.stop();
                 process.exit();
                 break;
             case '\u001B\u005B\u0041':
@@ -83,18 +83,13 @@ function startVideoState() {
             AzureIOT.sendError(err);
             state = -1;
         }
-    });
-
-    background.play();*/
+    });*/   
 }
 
 function checkDistance(distance) {
-    var video, i;
-
     if (state != -1 && !playing) {
-        for (i = 0; i < steps.length; i++) {
+        for (var i = 0; i < steps.length; i++) {
             if (distance < steps[i].distance) {
-                //video = steps[i].video;
                 video = videos[i];
                 state = i;
                 break;
