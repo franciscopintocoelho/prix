@@ -134,7 +134,7 @@ function checkDistance(distance) {
         video.play();   
         
         if(last && last.getStatus().playing) {
-            last.stop();
+            last.pause();
         }
     }
 };
