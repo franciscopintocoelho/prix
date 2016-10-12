@@ -130,9 +130,12 @@ function checkDistance(distance) {
     }
 
     if (video) {
-        video.play();
         playing = true;
-        if(last) last.stop();
+        video.play();
+        
+        if(last && last.isPlaying()) {
+            last.stop();
+        }
     }
 };
 
