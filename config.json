@@ -2,16 +2,18 @@
     "azureIOT": {
         "connectionString": "HostName=prix.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=P0+Yi9IHdqN/35go3aroNPD1HFMn9ggwUSzit0w6QA0=",
         "hostname": "prix.azure-devices.net",
-        "deviceId": "prix-1",
+        "deviceId": "testDevice",
         "protocol": "amqp",
         "interval": 1000
     },
-    "background": "seduction.mp4",
     "steps": [{
-        "video": "tv.mp4",
-        "distance": 50
+        "video": "seduction.mp4",
+        "distance": 600
     },{
         "video": "reveal.mp4",
         "distance": 100
+    },{
+        "video": "tv.mp4",
+        "distance": 50
     }]
 }

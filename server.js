@@ -70,9 +70,9 @@ function getSimulatedSensorDistance() {
 function startVideoState() {
     state = 0;
     videos = [];
+    
     manager = new omxplayer();
     manager.setVideosDirectory('videos');
-    background = manager.create(config.background);
     
     for(var i = 0; i < config.steps.length; i++) {
         videos.push(manager.create(config.steps[i].video));
@@ -83,9 +83,9 @@ function startVideoState() {
             AzureIOT.sendError(err);
             state = -1;
         }
-    });*/
+    });
 
-    background.play();
+    background.play();*/
 }
 
 function checkDistance(distance) {
