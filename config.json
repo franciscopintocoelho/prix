@@ -20,7 +20,7 @@
     },{
         "video": "acercate.mp4",
         "complete": false,
-        "distance": 100,
+        "distance": null,
         "next": 0
     },{
         "video": "tv.mp4",

@@ -79,7 +79,7 @@ function startVideoState() {
     manager.setVideosDirectory('videos');
     
     for(var i = 0; i < steps.length; i++) {
-        createInstance(steps[i]);
+        createInstance(steps[i], i);
     }
 
     //background = manager.create(config.background, { '--loop': true, '--no-keys': true, '--no-osd': true, '--layer': 0 });
@@ -93,9 +93,9 @@ function startVideoState() {
     });*/
 }
 
-function createInstance(step) {
-    var instance = manager.create(step.video, { '--no-keys': true, '--no-osd': true, '--layer': i });
-    
+function createInstance(step, layer) {
+    var instance = manager.create(step.video, { '--no-keys': true, '--no-osd': true, '--layer': layer });
+
     instance.on('end', function() {
         state = step.next;
         if(state) {
@@ -110,7 +110,7 @@ function createInstance(step) {
 function checkDistance(distance) {
     var len = steps.length, last;
     
-    if (state == -1) return;
+    if (state === -1) return;
 
     switch(state) {
         case 0:
