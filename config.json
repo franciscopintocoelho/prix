@@ -8,8 +8,14 @@
     },
     "background": "seduction.mp4",
     "steps": [{
+        "video": "seducir.mp4",
+        "distance": 200
+    },{
         "video": "reveal.mp4",
         "distance": 100
+    },{
+        "video": "acercate.mp4",
+        "distance": 80
     },{
         "video": "tv.mp4",
         "distance": 50

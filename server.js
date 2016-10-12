@@ -63,7 +63,7 @@ function getSimulatedSensorDistance() {
     setInterval(function () {
         AzureIOT.setStatus(distance, state);
         if (distance > 10) {
-            //checkDistance(distance);
+            checkDistance(distance);
         } else console.log('ignored: ', distance);
     }, 50);
 };
@@ -79,14 +79,14 @@ function startVideoState() {
     manager.setVideosDirectory('videos');
     
     for(var i = 0; i < config.steps.length; i++) {
-        instance = manager.create(config.steps[i].video, { '--no-keys': true, '--layer': 1 });
+        instance = manager.create(config.steps[i].video, { '--no-keys': true, '--no-osd': true, '--layer': 1 });
         instance.on('end', function() {
             playing = false;
         });
         videos.push(instance);
     }
 
-    background = manager.create(config.background, { '--loop': true, '--no-keys': true, '--layer': 0 });
+    background = manager.create(config.background, { '--loop': true, '--no-keys': true, '--no-osd': true, '--layer': 0 });
     background.play();
 
     /*child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
