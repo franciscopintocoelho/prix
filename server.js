@@ -47,7 +47,8 @@ function getSimulatedSensorDistance() {
     stdin.on('data', function (key) {
         switch (key) {
             case '\u0003':
-                video.stop();
+                if(background) background.stop();
+                if(video) video.stop();
                 process.exit();
                 break;
             case '\u001B\u005B\u0041':
