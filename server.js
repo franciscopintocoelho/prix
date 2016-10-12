@@ -85,32 +85,30 @@ function startVideoState() {
     //background = manager.create(config.background, { '--loop': true, '--no-keys': true, '--no-osd': true, '--layer': 0 });
     //background.play();
 
-    /*child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
+    child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
         if (err) {
             AzureIOT.sendError(err);
             state = -1;
         }
-    });*/
+    });
 }
 
 function createInstance(step, index) {
     var layer = index + 1;
-    console.log(step.videos);
-    var instance = manager.create(step.videos, { '--no-keys': true, '--no-osd': true, '--layer': layer });
+    var instance = manager.create(step.video, { '--no-keys': true, '--no-osd': true, '--layer': layer });
 
     instance.on('end', function() {
-        console.log('end');
         if(state != layer) return;
 
-        /*if(step.next != 0) {
+        if(step.next != 0) {
             lockVideo(2000);
             state = step.next
             video = videos[state-1];
             video.play();
-        } else {*/
+        } else {
             lockVideo(10000);
             state = 0;
-        //}
+        }
     });
 
     videos.push(instance);
@@ -136,13 +134,13 @@ function checkDistance(distance) {
                 state = 2;
             }
             break;
-        /*case 3:
+        case 3:
             if(distance <= steps[3].distance) {
                 video = videos[3];
                 playVideo();
                 state = 4;
             }
-            break;*/
+            break;
     }
 };
 
