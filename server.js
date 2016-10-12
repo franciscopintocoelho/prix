@@ -93,10 +93,10 @@ function checkDistance(distance) {
 
     if (state != -1 && !playing) {
         for (i = 0; i < steps.length; i++) {
-            if (distance < steps[i].distance && state != (i + 1)) {
+            if (distance < steps[i].distance) {
                 //video = steps[i].video;
                 video = videos[i];
-                state = (i + 1);
+                state = i;
                 break;
             }
         }
@@ -113,14 +113,11 @@ function checkDistance(distance) {
             });*/
 
             video.on('end', function() {
-                state = 0;
-                setTimeout(function () {
-                    playing = false;
-                }, 3000);
+                console.log('end')
+                playing = false;
             });
 
             video.play();
-            
         }
     }
 };
