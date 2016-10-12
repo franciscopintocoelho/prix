@@ -105,7 +105,7 @@ function createInstance(step, index) {
         if(state != 0) {
             video = videos[state-1];
             video.play();
-        }
+        } else lockVideo(3000);
     });
 
     videos.push(instance);
@@ -114,7 +114,7 @@ function createInstance(step, index) {
 function checkDistance(distance) {
     var len = steps.length, last;
     
-    if (state === -1) return;
+    if (state === -1 || lock) return;
 
     switch(state) {
         case 0:
@@ -137,8 +137,18 @@ function checkDistance(distance) {
             break;
     }
 
-    if (video) video.play();
+    if (video) {
+        playVideo();
+        lockVideo(1000);
+    }
 };
+
+function lockVideo(delay) {
+    lock = true;
+    setTimeout(function() {
+        lock = false;
+    }, delay);
+}
 
 function start() {
     startVideoState();
