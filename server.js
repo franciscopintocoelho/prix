@@ -64,10 +64,12 @@ function getSimulatedSensorDistance() {
         if (distance > 10) {
             checkDistance(distance);
         } else console.log('ignored: ', distance);
-    }, 10);
+    }, 50);
 };
 
 function startVideoState() {
+    var instance;
+
     state = 0;
     videos = [];
     
@@ -75,8 +77,15 @@ function startVideoState() {
     manager.setVideosDirectory('videos');
     
     for(var i = 0; i < config.steps.length; i++) {
-        videos.push(manager.create(config.steps[i].video));
+        instance = manager.create(config.steps[i].video, { '--no-keys': true, '--layer': 1 });
+        instance.on('end', function() {
+            playing = false;
+        });
+        videos.push(instance);
     }
+
+    background = manager.create(config.background, { '--loop': true, '--no-keys': true, '--layer': 0 });
+    background.play();
 
     /*child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
         if (err) {
@@ -93,7 +102,7 @@ function checkDistance(distance) {
         for (var i = len - 1; i >= 0; i--) {
             if (distance <= steps[i].distance) {
                 video = videos[i];
-                state = i;
+                state = (i+1);
                 break;
             }
         }
@@ -108,11 +117,6 @@ function checkDistance(distance) {
                     playing = false;
                 }, 3000);
             });*/
-
-            video.on('end', function() {
-                console.log('end');
-                playing = false;
-            });
 
             video.play();
         }
