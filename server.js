@@ -158,7 +158,8 @@ function lockVideo(delay) {
 
 function start() {
     startVideoState();
-    getSimulatedSensorDistance();
+    getSensorDistance();
+    //getSimulatedSensorDistance();
 }
 
 start();
