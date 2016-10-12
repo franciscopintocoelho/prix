@@ -81,11 +81,11 @@ function startVideoState() {
     for(var i = 0; i < steps.length; i++) {
         instance = manager.create(steps[i].video, { '--no-keys': true, '--no-osd': true, '--layer': i });
         if(steps[i].complete) {
-            /*instance.on('end', function() {
+            instance.on('end', function() {
                 console.log('end');
                 playing = false;
                 state = 0;
-            });*/
+            });
         }
         videos.push(instance);
     }
@@ -132,7 +132,7 @@ function checkDistance(distance) {
     if (video) {
         video.play();
         playing = true;
-        if(last) last.stop();
+        //if(last) last.stop();
     }
 };
 
