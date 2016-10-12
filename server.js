@@ -62,7 +62,7 @@ function getSimulatedSensorDistance() {
     setInterval(function () {
         AzureIOT.setStatus(distance, state);
         if (distance > 10) {
-            checkDistance(distance);
+            //checkDistance(distance);
         } else console.log('ignored: ', distance);
     }, 50);
 };
