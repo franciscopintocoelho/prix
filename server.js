@@ -82,8 +82,8 @@ function startVideoState() {
         createInstance(steps[i], i);
     }
 
-    //background = manager.create(config.background, { '--loop': true, '--no-keys': true, '--no-osd': true, '--layer': 0 });
-    //background.play();
+    background = manager.create(config.background, { '--loop': true, '--no-keys': true, '--no-osd': true, '--layer': 0 });
+    background.play();
 
     /*child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
         if (err) {
