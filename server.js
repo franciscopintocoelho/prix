@@ -1,5 +1,5 @@
 var child = require('child_process');
-var omxplayer = require('omx-manager');
+//var omxplayer = require('omx-manager');
 var i2c = require('i2c-bus');
 
 var config = require('./config.json');
@@ -69,17 +69,17 @@ function getSimulatedSensorDistance() {
 };
 
 function startVideoState() {
-    var instance;
+    //var instance;
 
-    videos = [];
+    //videos = [];
     
-    manager = new omxplayer();
+    //manager = new omxplayer();
     //manager.enableNativeLoop();
-    manager.setVideosDirectory('videos');
+    //manager.setVideosDirectory('videos');
     
-    for(var i = 0; i < steps.length; i++) {
-        createInstance(steps[i], i);
-    }
+    //for(var i = 0; i < steps.length; i++) {
+    //    createInstance(steps[i], i);
+    //}
 
     child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
         if (err) {
@@ -88,7 +88,7 @@ function startVideoState() {
     });
 }
 
-function createInstance(step, index) {
+/*function createInstance(step, index) {
     var layer = index + 1, delay;
     var instance = manager.create(step.video, { '--no-keys': true, '--no-osd': true, '-o': 'both' ,'--layer': layer });
 
@@ -104,7 +104,7 @@ function createInstance(step, index) {
     });
 
     videos.push(instance);
-}
+}*/
 
 function checkDistance(distance) {
     var len = steps.length, last;
@@ -114,38 +114,57 @@ function checkDistance(distance) {
     switch(state) {
         case -1:
             if(distance <= steps[0].distance) {
-               video = videos[0];
-               playVideo();
+               video = steps[0].video;//videos[0];
+               lockVideo(2000);
+               playVideo(0);
                state = 0; 
             }
             break;
         case 0:
             if(distance <= steps[1].distance) {
-               video = videos[1];
-               playVideo();
+               video = steps[1].video;//videos[1];
+               lockVideo(2000);
+               playVideo(1);
                state = 1; 
             }
             break;
         case 1:
             if(distance <= steps[2].distance) {
-                video = videos[2];
-                playVideo();
+                video = steps[2].video;//videos[2];
+                lockVideo(2000);
+                playVideo(2);
                 state = 2;
             }
             break;
         case 3:
             if(distance <= steps[4].distance) {
-                video = videos[4];
-                playVideo();
+                video = steps[4].video;//videos[4];
+                lockVideo(2000);
+                playVideo(4);
                 state = 4;
             }
             break;
     }
 };
 
-function playVideo() {
-    video.play();
-    lockVideo(2000);
+function playVideo(index) {
+    var next, delay;
+
+    child.exec('omxplayer --no-osd --no-keys -o both --layer ' + (index+1) + ' videos/' + video, function (err, stdout, stderr) {
+        if(!err) {
+            if(state != index) return;
+
+            next = steps[index].next;
+            delay = next ? 2000 : 10000;
+
+            video = steps[next].video;
+
+            lockVideo(delay);
+            playVideo(next);
+
+            state = next;
+        } else console.log(stderr);
+    });
 }
 
 function lockVideo(delay) {
