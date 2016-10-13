@@ -120,9 +120,8 @@ function playVideo(last) {
     video.play();
 
     if(last) {
-        setTimeout(function() {
-            last.stop();
-        }, 2000);
+        console.log('stop');
+        last.stop();
     }
 }
 
