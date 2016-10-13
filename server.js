@@ -90,7 +90,7 @@ function createInstance(step, index) {
     instance.on('end', function () {
         if (state != index) return;
 
-        delay = step.next ? 2000 : 10000;
+        delay = state ? 2000 : 0;
 
         lockVideo(delay);
         state = step.next
@@ -129,7 +129,6 @@ function lockVideo(delay) {
 function start() {
     startVideoState();
     getSensorDistance();
-    //getSimulatedSensorDistance();
 }
 
 start();
