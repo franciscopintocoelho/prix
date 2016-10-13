@@ -47,15 +47,15 @@ function getSimulatedSensorDistance() {
     stdin.on('data', function (key) {
         switch (key) {
             case '\u0003':
-                if(background) background.stop();
-                if(video) video.stop();
+                if (background) background.stop();
+                if (video) video.stop();
                 process.exit();
                 break;
             case '\u001B\u005B\u0041':
-                distance+= 20;
+                distance += 20;
                 break;
             case '\u001B\u005B\u0042':
-                distance-= 20;
+                distance -= 20;
                 break;
         }
     });
@@ -72,16 +72,16 @@ function startVideoState() {
     var instance;
 
     videos = [];
-    
+
     manager = new omxplayer();
     //manager.enableNativeLoop();
     manager.setVideosDirectory('videos');
-    
-    for(var i = 0; i < steps.length; i++) {
+
+    for (var i = 0; i < steps.length; i++) {
         createInstance(steps[i], i);
     }
 
-    child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
+    child.exec('python black.py', function (err, stdout, stderr) {
         if (err) {
             AzureIOT.sendError(err);
         }
@@ -90,10 +90,10 @@ function startVideoState() {
 
 function createInstance(step, index) {
     var layer = index + 1, delay;
-    var instance = manager.create(step.video, { '--no-keys': true, '--no-osd': true, '-o': 'both' ,'--layer': layer });
+    var instance = manager.create(step.video, { '--no-keys': true, '--no-osd': true, '-o': 'both', '--layer': layer });
 
-    instance.on('end', function() {
-        if(state != index) return;
+    instance.on('end', function () {
+        if (state != index) return;
 
         delay = step.next ? 2000 : 10000;
 
@@ -108,39 +108,45 @@ function createInstance(step, index) {
 
 function checkDistance(distance) {
     var len = steps.length, last;
-    
+
     if (lock) return;
 
-    switch(state) {
+    if (steps[state].distance && distance <= steps[state].distance) {
+        video = videos[state+1];
+        playVideo();
+        state++;
+    }
+
+    /*switch (state) {
         case -1:
-            if(distance <= steps[0].distance) {
-               video = videos[0];
-               playVideo();
-               state = 0; 
+            if (distance <= steps[0].distance) {
+                video = videos[0];
+                playVideo();
+                state = 0;
             }
             break;
         case 0:
-            if(distance <= steps[1].distance) {
-               video = videos[1];
-               playVideo();
-               state = 1; 
+            if (distance <= steps[1].distance) {
+                video = videos[1];
+                playVideo();
+                state = 1;
             }
             break;
         case 1:
-            if(distance <= steps[2].distance) {
+            if (distance <= steps[2].distance) {
                 video = videos[2];
                 playVideo();
                 state = 2;
             }
             break;
         case 3:
-            if(distance <= steps[4].distance) {
+            if (distance <= steps[4].distance) {
                 video = videos[4];
                 playVideo();
                 state = 4;
             }
             break;
-    }
+    }*/
 };
 
 function playVideo() {
@@ -150,7 +156,7 @@ function playVideo() {
 
 function lockVideo(delay) {
     lock = true;
-    setTimeout(function() {
+    setTimeout(function () {
         lock = false;
     }, delay);
 }
