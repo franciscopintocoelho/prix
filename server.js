@@ -102,27 +102,21 @@ function createInstance(step, index) {
 }
 
 function checkDistance(distance) {
-    var len = steps.length, last;
+    var len = steps.length;
     var index = state+1;
 
     if (lock || index > steps.length-1 || !steps[index].distance) return;
 
     if (distance <= steps[index].distance) {
-        last = video;
         video = videos[index];
-        playVideo(last);
+        playVideo();
         state = index;
     }
 };
 
-function playVideo(last) {
+function playVideo() {
     lockVideo(2000);
     video.play();
-
-    if(last) {
-        console.log('stop');
-        last.stop();
-    }
 }
 
 function lockVideo(delay) {
