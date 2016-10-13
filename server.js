@@ -85,12 +85,12 @@ function startVideoState() {
     //background = manager.create(config.background, { '--loop': true, '--no-keys': true, '--no-osd': true, '--layer': 0 });
     //background.play();
 
-    child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
+    /*child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
         if (err) {
             AzureIOT.sendError(err);
             state = -1;
         }
-    });
+    });*/
 }
 
 function createInstance(step, index) {
