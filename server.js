@@ -71,7 +71,6 @@ function getSimulatedSensorDistance() {
 function startVideoState() {
     var instance;
 
-    state = 0;
     videos = [];
     
     manager = new omxplayer();
@@ -82,33 +81,26 @@ function startVideoState() {
         createInstance(steps[i], i);
     }
 
-    background = manager.create(config.background, { '--loop': true, '--no-keys': true, '--no-osd': true, '--layer': 0 });
-    background.play();
-
-    /*child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
+    child.exec('omxplayer --loop --no-osd --no-keys --layer 0 videos/' + config.background, function (err, stdout, stderr) {
         if (err) {
             AzureIOT.sendError(err);
-            state = -1;
         }
-    });*/
+    });
 }
 
 function createInstance(step, index) {
-    var layer = index + 1;
+    var layer = index + 1, delay;
     var instance = manager.create(step.video, { '--no-keys': true, '--no-osd': true, '--layer': layer });
 
     instance.on('end', function() {
         if(state != layer) return;
 
-        if(step.next != 0) {
-            lockVideo(2000);
-            state = step.next
-            video = videos[state-1];
-            video.play();
-        } else {
-            lockVideo(10000);
-            state = 0;
-        }
+        delay = step.next ? 2000 : 10000;
+
+        lockVideo(delay);
+        state = step.next
+        video = videos[state];
+        video.play();
     });
 
     videos.push(instance);
@@ -120,23 +112,30 @@ function checkDistance(distance) {
     if (state === -1 || lock) return;
 
     switch(state) {
-        case 0:
+        case -1:
             if(distance <= steps[0].distance) {
                video = videos[0];
+               playVideo();
+               state = 0; 
+            }
+            break;
+        case 0:
+            if(distance <= steps[1].distance) {
+               video = videos[1];
                playVideo();
                state = 1; 
             }
             break;
         case 1:
-            if(distance <= steps[1].distance) {
-                video = videos[1];
+            if(distance <= steps[2].distance) {
+                video = videos[2];
                 playVideo();
                 state = 2;
             }
             break;
         case 3:
-            if(distance <= steps[3].distance) {
-                video = videos[3];
+            if(distance <= steps[4].distance) {
+                video = videos[4];
                 playVideo();
                 state = 4;
             }

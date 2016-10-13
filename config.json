@@ -6,8 +6,12 @@
         "protocol": "amqp",
         "interval": 1000
     },
-    "background": "seduction.mp4",
+    "background": "black.mp4",
     "steps": [{
+        "video": "seduction.mp4",
+        "distance": 600,
+        "next": 0
+    },{
         "video": "seducir.mp4",
         "distance": 150,
         "next": 0
