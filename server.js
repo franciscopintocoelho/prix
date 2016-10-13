@@ -93,7 +93,7 @@ function createInstance(step, index) {
     var instance = manager.create(step.video, { '--no-keys': true, '--no-osd': true, '--layer': layer });
 
     instance.on('end', function() {
-        if(state != layer) return;
+        if(state != index) return;
 
         delay = step.next ? 2000 : 10000;
 
@@ -109,7 +109,7 @@ function createInstance(step, index) {
 function checkDistance(distance) {
     var len = steps.length, last;
     
-    if (state === -1 || lock) return;
+    if (lock) return;
 
     switch(state) {
         case -1:
