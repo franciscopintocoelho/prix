@@ -90,7 +90,7 @@ function startVideoState() {
 
 function createInstance(step, index) {
     var layer = index + 1, delay;
-    var instance = manager.create(step.video, { '--no-keys': true, '--no-osd': true, '--layer': layer });
+    var instance = manager.create(step.video, { '--no-keys': true, '--no-osd': true, '-o': 'both' ,'--layer': layer });
 
     instance.on('end', function() {
         if(state != index) return;
