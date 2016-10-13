@@ -74,18 +74,13 @@ function startVideoState() {
     videos = [];
 
     manager = new omxplayer();
-    //manager.enableNativeLoop();
     manager.setVideosDirectory('videos');
 
     for (var i = 0; i < steps.length; i++) {
         createInstance(steps[i], i);
     }
 
-    child.exec('python black.py', function (err, stdout, stderr) {
-        if (err) {
-            AzureIOT.sendError(err);
-        }
-    });
+    child.exec('python black.py');
 }
 
 function createInstance(step, index) {
@@ -113,15 +108,22 @@ function checkDistance(distance) {
     if (lock || index > steps.length-1 || !steps[index].distance) return;
 
     if (distance <= steps[index].distance) {
+        last = video;
         video = videos[index];
-        playVideo();
+        playVideo(last);
         state = index;
     }
 };
 
-function playVideo() {
+function playVideo(last) {
     lockVideo(2000);
     video.play();
+
+    if(last) {
+        setTimeout(function() {
+            last.stop();
+        }, 2000);
+    }
 }
 
 function lockVideo(delay) {
