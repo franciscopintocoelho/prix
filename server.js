@@ -110,7 +110,7 @@ function checkDistance(distance) {
     var len = steps.length, last;
     var index = state+1;
 
-    if (lock || !steps[index].distance || index > steps.length-1) return;
+    if (lock || index > steps.length-1 || !steps[index].distance) return;
 
     if (distance <= steps[index].distance) {
         video = videos[index];
