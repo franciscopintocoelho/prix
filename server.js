@@ -108,45 +108,15 @@ function createInstance(step, index) {
 
 function checkDistance(distance) {
     var len = steps.length, last;
+    var index = state+1;
 
-    if (lock) return;
+    if (lock || !steps[index].distance || index > steps.length-1) return;
 
-    if (steps[state].distance && distance <= steps[state].distance) {
-        video = videos[state+1];
+    if (distance <= steps[index].distance) {
+        video = videos[index];
         playVideo();
-        state++;
+        state = index;
     }
-
-    /*switch (state) {
-        case -1:
-            if (distance <= steps[0].distance) {
-                video = videos[0];
-                playVideo();
-                state = 0;
-            }
-            break;
-        case 0:
-            if (distance <= steps[1].distance) {
-                video = videos[1];
-                playVideo();
-                state = 1;
-            }
-            break;
-        case 1:
-            if (distance <= steps[2].distance) {
-                video = videos[2];
-                playVideo();
-                state = 2;
-            }
-            break;
-        case 3:
-            if (distance <= steps[4].distance) {
-                video = videos[4];
-                playVideo();
-                state = 4;
-            }
-            break;
-    }*/
 };
 
 function playVideo() {
