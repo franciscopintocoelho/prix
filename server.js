@@ -4,6 +4,7 @@ var i2c = require('i2c-bus');
 
 var config = require('./config.json');
 var AzureIOT = require('./azureiot')(config.azureIOT);
+//var AzureIOT = require('./localiot')(config.azureIOT);
 
 var bus = i2c.openSync(1);
 var dist, address = 0x70;
