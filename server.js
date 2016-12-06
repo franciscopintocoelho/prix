@@ -23,7 +23,7 @@ function getSensorDistance() {
                         AzureIOT.setStatus(distance, state);
                         if (distance > 10) {
                             checkDistance(distance);
-                        } else console.log('ignored: ', distance);
+                        } //else console.log('ignored: ', distance);
                     } else {
                         AzureIOT.setStatus(0, state);
                         AzureIOT.sendError(err);

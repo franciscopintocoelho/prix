@@ -7,8 +7,8 @@ var AzureIOT = function (config) {
 
   var status = { distance: -1, state: -1 };;
 
-  socket = io('http://192.168.1.100:8080');
-  // Create a message and send it to the IoT Hub every second
+  socket = io('http://192.168.1.100:3000');
+  
   socket.on('connect', function () {
     setInterval(function () {
       if (status && status.distance) {
