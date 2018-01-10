@@ -1,6 +1,6 @@
 {
     "azureIOT": {
-        "connectionString": "HostName=prix.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=P0+Yi9IHdqN/35go3aroNPD1HFMn9ggwUSzit0w6QA0=",
+        "connectionString": "HostName=prix.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=k8iyUEad1RJLYb/6LgF9Ff46I5jDVUBUM5NKYjcR1EA=",
         "hostname": "prix.azure-devices.net",
         "deviceId": "testDevice",
         "protocol": "amqp",
